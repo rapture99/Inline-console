@@ -1,0 +1,4 @@
+{
+  "//": "Scope marker: the plugin is ESM, matching vite.config.js conventions.",
+  "type": "module"
+}
