@@ -1,0 +1,4 @@
+{
+  "//": "Scope marker: the runtime is ESM. Without this Node has to guess the module type of shared.js and emits MODULE_TYPELESS_PACKAGE_JSON.",
+  "type": "module"
+}

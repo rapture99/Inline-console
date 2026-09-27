@@ -1,0 +1,119 @@
+{
+  "name": "inline-console",
+  "displayName": "Inline Console",
+  "description": "Shows console.log values and runtime errors inline in the editor, as your code runs.",
+  "version": "0.1.0",
+  "publisher": "local",
+  "license": "MIT",
+  "engines": {
+    "vscode": "^1.85.0",
+    "node": ">=18.19.0"
+  },
+  "categories": [
+    "Debuggers",
+    "Other"
+  ],
+  "main": "./out/extension.js",
+  "activationEvents": [
+    "onStartupFinished"
+  ],
+  "contributes": {
+    "commands": [
+      {
+        "command": "inlineConsole.toggle",
+        "title": "Inline Console: Toggle"
+      },
+      {
+        "command": "inlineConsole.clear",
+        "title": "Inline Console: Clear All Values"
+      },
+      {
+        "command": "inlineConsole.showOutput",
+        "title": "Inline Console: Show Output Channel"
+      },
+      {
+        "command": "inlineConsole.copyNodeCommand",
+        "title": "Inline Console: Copy Node Preload Flag"
+      }
+    ],
+    "configuration": {
+      "title": "Inline Console",
+      "properties": {
+        "inlineConsole.enabled": {
+          "type": "boolean",
+          "default": true,
+          "description": "Capture and display runtime values inline."
+        },
+        "inlineConsole.tcpPort": {
+          "type": "number",
+          "default": 5544,
+          "description": "TCP port the Node runtime connects to."
+        },
+        "inlineConsole.wsPort": {
+          "type": "number",
+          "default": 5545,
+          "description": "WebSocket port the browser runtime connects to."
+        },
+        "inlineConsole.maxInlineLength": {
+          "type": "number",
+          "default": 120,
+          "description": "Maximum characters shown in the inline value."
+        },
+        "inlineConsole.showHitCount": {
+          "type": "boolean",
+          "default": true,
+          "description": "Append a hit counter when a line logs more than once."
+        },
+        "inlineConsole.autoInjectNodeOptions": {
+          "type": "boolean",
+          "default": true,
+          "description": "Automatically add the runtime preload to NODE_OPTIONS in new integrated terminals."
+        },
+        "inlineConsole.clearOnSessionStart": {
+          "type": "boolean",
+          "default": true,
+          "description": "Clear previous values when a new runtime session connects."
+        },
+        "inlineConsole.maxHistoryPerLine": {
+          "type": "number",
+          "default": 20,
+          "description": "How many recent values to retain per source line for the hover view."
+        },
+        "inlineConsole.expressionValues": {
+          "type": "boolean",
+          "default": false,
+          "description": "Capture the value of every expression, not just console.* calls, so any value can be hovered without adding a log. Rewrites workspace source as it loads; node_modules is never touched. Experimental."
+        },
+        "inlineConsole.expressionSampleMs": {
+          "type": "number",
+          "default": 100,
+          "description": "How often captured expression values are sampled and sent, in milliseconds. Higher values cost less in hot loops."
+        }
+      }
+    }
+  },
+  "scripts": {
+    "compile": "tsc -p .",
+    "watch": "tsc -watch -p .",
+    "package": "vsce package --allow-missing-repository --out inline-console.vsix",
+    "install-local": "npm run package && code --install-extension inline-console.vsix --force",
+    "test": "npm run test:equivalence && npm run test:sweep",
+    "test:equivalence": "node tools/equivalence.mjs",
+    "test:sweep": "node tools/parse-sweep.mjs",
+    "preview": "node tools/transform-preview.mjs",
+    "vendor:acorn": "node tools/vendor-acorn.mjs",
+    "vscode:prepublish": "npm run compile"
+  },
+  "dependencies": {
+    "source-map-js": "^1.2.1",
+    "ws": "^8.18.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.0",
+    "@types/vscode": "^1.85.0",
+    "@types/ws": "^8.5.13",
+    "@vscode/vsce": "^3.9.2",
+    "acorn": "^8.18.0",
+    "typescript": "^5.7.2"
+  }
+}
